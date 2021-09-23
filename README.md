@@ -1,8 +1,8 @@
-# CSV CONVERT TO ARRAY
+# CSV CONVERT
 
 Convertendo arquivos csv para array
 
-Como usar:
+## Como usar:
 
 ```php
 
@@ -19,7 +19,16 @@ array(2) { [0]=> string(14) "21675698000188" [1]=> string(6) "169931" }
 array(2) { [0]=> string(14) "99349416000441" [1]=> string(6) "172536" }
 
 ```
-Arquivo CSV Exemplo
+
+## Parâmetros:
+
+| Parâmetro | Tipo     | Descrição                |
+| :-------- | :------- | :------------------------- |
+| `file`    | `string` | **Obrigatório**. Arquivo CSV |
+| `separator` | `string` | Separador de coluna do CSV, Padrão *;* |
+
+
+## Arquivo CSV Exemplo
 ```csv
 22637212000111,171665
 52079369000112,172837
