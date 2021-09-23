@@ -1,0 +1,22 @@
+{
+    "name": "kenowlee/csv-convert",
+    "description": "Convertendo CSV para Array",
+    "keywords": [
+        "csv",
+        "array",
+        "convert",
+        "converter"
+    ],
+    "homepage": "https://github.com/kenowlee/csv-convert",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronaldo Santos",
+            "email": "ronaldo.nasa@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    }
+}
