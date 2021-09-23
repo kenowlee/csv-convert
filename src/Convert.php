@@ -50,6 +50,10 @@ class CSV
      */
     public static function toArray(string $file, string $separator = ';')
     {
+        if (empty($file)) {
+            return 'File empty';
+        }
+
         if (!self::exist($file)) {
             return 'File not found';
         }
