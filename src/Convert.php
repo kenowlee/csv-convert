@@ -2,6 +2,8 @@
 
 namespace Convert;
 
+use RuntimeException;
+
 /**
  * Class CSV
  * @package CSV
@@ -9,69 +11,59 @@ namespace Convert;
  */
 class CSV
 {
-    /**
-     * @param string $file
-     *
-     * @return bool
-     */
-    public static function exist(string $file): bool
-    {
-        if (!file_exists($file)) {
-            return false;
-        }
-
-        return true;
-    }
+    private const _allowed_mime_types = [
+        'application/vnd.ms-excel',
+        'text/plain',
+        'text/csv',
+        'text/tsv'
+    ];
 
     /**
      * @param string $file
      *
      * @return bool
      */
-    public static function isCsv(string $file): bool
+    private static function _isCsv(string $file): bool
     {
-        $allowed = [
-            'application/vnd.ms-excel',
-            'text/plain',
-            'text/csv',
-            'text/tsv'
-        ];
-        if (in_array(mime_content_type($file), $allowed)) {
-            return true;
-        }
-        return false;
+        return in_array(mime_content_type($file), self::_allowed_mime_types);
     }
 
     /**
      * @param string $file
      * @param string $separator
-     *
-     * @return string
+     * @throws RuntimeException
+     * @return array
      */
-    public static function toArray(string $file, string $separator = ';')
+    public static function toArray(string $file, string $separator = ';'): array
     {
         if (empty($file)) {
-            return 'File empty';
+            throw new RuntimeException('Invalid File');
         }
 
-        if (!self::exist($file)) {
-            return 'File not found';
+        if (!file_exists($file)) {
+            throw new RuntimeException('File not found');
         }
 
-        if (!self::isCsv($file)) {
-            return 'File not allowed';
+        if (!self::_isCsv($file)) {
+            throw new RuntimeException('File not allowed');
         }
 
-        $opened = fopen($file, "r");
+        $opened = fopen($file, 'r');
 
         if ($opened === false) {
-            return 'Unable to open file';
+            throw new RuntimeException('Unable to open file');
         }
+
         $data = [];
-        while (($line = fgetcsv($opened, 1000, $separator)) !== false) {
-            if (!empty($line)) {
-                $data[] = $line;
+
+        $line = fgetcsv($opened, 1000, $separator);
+        
+        while ($line !== false) {
+            if (empty($line)) {
+                continue;
             }
+            $data[] = $line;
+            $line = fgetcsv($opened, 1000, $separator);
         }
 
         fclose($opened);
